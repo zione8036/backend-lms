@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -17,6 +18,14 @@ public class Program {
 	private String program_title;
 	 @NotBlank(message="Major must not be empty")
 	private String major;
+//	 @ManyToMany
+//	private ProfessorLoad professorLoad;
+//	public ProfessorLoad getProfessorLoad() {
+//		return professorLoad;
+//	}
+//	public void setProfessorLoad(ProfessorLoad professorLoad) {
+//		this.professorLoad = professorLoad;
+//	}
 	public Long getProgram_id() {
 		return program_id;
 	}
