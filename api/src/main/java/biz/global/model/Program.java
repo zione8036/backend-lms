@@ -1,5 +1,5 @@
 package biz.global.model;
 
-public class student {
+public class Program {
 
 }
