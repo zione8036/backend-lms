@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,7 +41,7 @@ public class AuthService {
 		context.insertInto(Tables.ADMIN, Tables.ADMIN.FIRST_NAME, Tables.ADMIN.LAST_NAME, Tables.ADMIN.PASSWORD, Tables.ADMIN.TYPE, Tables.ADMIN.USERNAME)
 		.values(model.getFirstName(), model.getLastName(), model.getPassword(), model.getType(), model.getUsername())
 		.execute();
-		return new AdminResponse(1, jwtUtility.generateToken(model), "Successfully registerd");
+		return new AdminResponse(1, jwtUtility.generateToken(model), "Registered Successfully");
 	}
 	
 	public  Boolean findByUserName(String username) throws IOException{
@@ -53,12 +55,14 @@ public class AuthService {
 		return data.isPresent();
 	}
 	
-	public AdminResponse login(Admin model) throws IOException {
+	public ResponseEntity<AdminResponse> login(Admin model) throws IOException {
 		
 		if(findByUserName(model.getUsername()) && bcrypt.matches(model.getPassword(), adminModel.getPassword())) {
-			return new AdminResponse(1, jwtUtility.generateToken(model), "");
+			//return new AdminResponse(1, jwtUtility.generateToken(model), "");
+			return ResponseEntity.ok().body(new AdminResponse(1, jwtUtility.generateToken(model), ""));
 		}
-		return new AdminResponse(0, "", "Invalid username or password");
+		//return new AdminResponse(0, "", "Invalid username or password");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AdminResponse(0, "", "Invalid username or password"));
 	}
 
 }
