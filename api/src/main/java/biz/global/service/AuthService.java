@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import biz.global.Table.Tables;
-import biz.global.Table.tables.records.AdminModelRecord;
 import biz.global.Table.tables.records.AdminRecord;
 import biz.global.model.Admin;
 import biz.global.model.AdminResponse;
@@ -36,12 +35,13 @@ public class AuthService {
 		if(findByUserName(model.getUsername())) {
 			return new AdminResponse(0, "", "Username already exist!");
 		}
-		
 		model.setPassword(bcrypt.encode(model.getPassword()));
 		context.insertInto(Tables.ADMIN, Tables.ADMIN.FIRST_NAME, Tables.ADMIN.LAST_NAME, Tables.ADMIN.PASSWORD, Tables.ADMIN.TYPE, Tables.ADMIN.USERNAME)
 		.values(model.getFirstName(), model.getLastName(), model.getPassword(), model.getType(), model.getUsername())
 		.execute();
-		return new AdminResponse(1, jwtUtility.generateToken(model), "Registered Successfully");
+		model.setPassword("");
+		
+		return new AdminResponse(1, jwtUtility.generateToken(model), "Registered Successfully", model);
 	}
 	
 	public  Boolean findByUserName(String username) throws IOException{
@@ -55,14 +55,15 @@ public class AuthService {
 		return data.isPresent();
 	}
 	
-	public ResponseEntity<AdminResponse> login(Admin model) throws IOException {
+	public AdminResponse login(Admin model) throws IOException {
 		
 		if(findByUserName(model.getUsername()) && bcrypt.matches(model.getPassword(), adminModel.getPassword())) {
-			//return new AdminResponse(1, jwtUtility.generateToken(model), "");
-			return ResponseEntity.ok().body(new AdminResponse(1, jwtUtility.generateToken(model), ""));
+			model.setPassword("");
+			return new AdminResponse(1, jwtUtility.generateToken(model), "", model);
+			//return ResponseEntity.ok().body(new AdminResponse(1, jwtUtility.generateToken(model), "", adminModel));
 		}
-		//return new AdminResponse(0, "", "Invalid username or password");
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AdminResponse(0, "", "Invalid username or password"));
+		return new AdminResponse(0, "", "Invalid username or password");
+		//return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AdminResponse(0, "", "Invalid username or password"));
 	}
 
 }
