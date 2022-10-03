@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
-@ Entity
+@Entity
 public class Subject {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
