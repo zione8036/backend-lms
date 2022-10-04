@@ -1,22 +1,30 @@
 package biz.global.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 @Entity
 public class ProfessorLoad {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long load_id;
-//	 @ManyToOne()
-//	private Professor professor;
-//	 @ManyToMany
-//	private Program program_title;
+	 
+	 @ManyToOne()
+	private Professor professor;
+	 
+	@OneToMany
+	private Set<Program> program_title;
+	 
 	private String section;
+	
 	private String yearLevel;
+	
 	public Long getLoad_id() {
 		return load_id;
 	}

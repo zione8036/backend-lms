@@ -1,8 +1,10 @@
 package biz.global.model;
 
 import java.sql.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,11 +18,12 @@ import biz.global.util.Generator;
 
 @Entity
 public class Professor {
-	 @Id
-	 @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long professor_id;
-	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "professor_seq")
-	 @GenericGenerator(
+	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "professor_seq")
+	@GenericGenerator(
 	            name = "professor_seq",
 	            strategy = "biz.global.util.Generator",
 	            parameters = {
@@ -29,22 +32,29 @@ public class Professor {
 	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
 	            })
 	 private String professor_no;
-	 @NotBlank(message="Professor name must not be blank")
+	
+	@NotBlank(message="Professor name must not be blank")
 	private String professor_name;
-	 @NotBlank(message="Work must not be blank")
+	
+	@NotBlank(message="Work must not be blank")
 	private String work;
-	 @NotBlank(message="Gender must not be blank")
+	
+	@NotBlank(message="Gender must not be blank")
 	private String gender;
-	 @NotBlank(message="Status must not be empty")
+	
+	@NotBlank(message="Status must not be empty")
 	private String status;
-	 @NotBlank(message="Birthdate must not be empty")
+	
+	@NotBlank(message="Birthdate must not be empty")
 	private Date birthdate;
+	
 	private String password;
+	
 	private Boolean active_deactive;
 //	 @OneToMany(mappedBy="professor")
 //	private Grades grade;
-//	 @OneToMany(mappedBy="professor")
-//	private Student student;
+//	 @OneToMany( mappedBy = "professor")
+//	private Set<Student> student;
 //	 @OneToMany(mappedBy="professor")
 //	private ProfessorLoad professor_load;
 //	 @OneToMany(mappedBy="professor")

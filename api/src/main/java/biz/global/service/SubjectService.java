@@ -20,12 +20,15 @@ public class SubjectService {
 				 				   Tables.SUBJECT.SUBJECT_CODE,
 				 				   Tables.SUBJECT.UNITS,
 				 				   Tables.SUBJECT.PREREQUISITES,
-				 				   Tables.SUBJECT.ACTIVE_DEACTIVE)
+				 				   Tables.SUBJECT.ACTIVE_DEACTIVE,
+				 				   Tables.SUBJECT.STUDENT_STUDENT_ID)
 				 				   .values(model.getSubject_title(),
 				 						   model.getSubject_code(),
 				 						   model.getUnits(),
 				 						   model.getPrerequisites(),
-				 						   model.getActive_deactive())
+				 						   model.getActive_deactive(),
+				 						   Long.parseLong(model.getStudent().getStudent_no())
+				 						   )
 				 				   .execute();
 	 }
 	 public Result<SubjectRecord> getSubjects(Subject subject) {

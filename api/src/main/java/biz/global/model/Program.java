@@ -1,31 +1,44 @@
 package biz.global.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Program {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long program_id;
+	 private Long program_id;
+	 
 	 @NotBlank(message="Program code must not be empty")
-	private String program_code;
+	 private String program_code;
+	 
 	 @NotBlank(message="Program Title must not be empty")
-	private String program_title;
+	 private String program_title;
+	 
 	 @NotBlank(message="Major must not be empty")
-	private String major;
-//	 @ManyToMany
-//	private ProfessorLoad professorLoad;
-//	public ProfessorLoad getProfessorLoad() {
-//		return professorLoad;
-//	}
-//	public void setProfessorLoad(ProfessorLoad professorLoad) {
-//		this.professorLoad = professorLoad;
-//	}
+	 private String major;
+	 
+	 @ManyToOne(fetch = FetchType.EAGER)
+	private ProfessorLoad professorLoad;
+	 
+	 @ManyToOne
+	 @JoinColumn(name = "student_id")
+	 private Student student;
+	 
+	public ProfessorLoad getProfessorLoad() {
+		return professorLoad;
+	}
+	public void setProfessorLoad(ProfessorLoad professorLoad) {
+		this.professorLoad = professorLoad;
+	}
 	public Long getProgram_id() {
 		return program_id;
 	}
