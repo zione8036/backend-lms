@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import biz.global.model.Subject;
 import biz.global.service.SubjectService;
 
@@ -23,6 +25,8 @@ public class SubjectController {
 	public String addSubject(@RequestBody Subject subject) throws IOException {
 		
 				service.addSubject(subject);
+				ObjectMapper mapper = new ObjectMapper();
+				System.out.println(mapper.writeValueAsString(subject)+ ",,,,,,,,,,,");
 				return "Subject added successfully";
 	}
 }

@@ -5,9 +5,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import biz.global.util.JSONDeserializer;
 
 @SpringBootApplication(scanBasePackages = {"biz.global"}, exclude = { SecurityAutoConfiguration.class } )
 @EnableJpaRepositories("biz.global.repo")
+@JsonDeserialize(using = JSONDeserializer.class)
+@EnableTransactionManagement
 @EntityScan("biz.global.model")
 public class ApiApplication {
 

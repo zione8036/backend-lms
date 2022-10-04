@@ -16,53 +16,47 @@ public class Subject  {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long subject_id;
-	 @NotBlank(message="Subject code must not be empty")
+	 
 	private String subject_code;
-	 @NotBlank(message="Subject title must not be empty")
+	 
 	private String subject_title;
-	 @NotBlank(message="Units must not be empty")
+	 
 	private Integer units;
+	 
 	private String prerequisites;
+	
     private Boolean active_deactive = true;
-//	 @NotBlank(message="Subject must not be empty")
-//	 @OneToMany(mappedBy="student")
+    
 //	private Grades grades;
     
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Student student;
 
 
-	/**
- * 
- */
-public Subject() {
-	super();
-}
+	public Student getStudent() {
+		return student;
+	}
 
 
-	/**
- * @param subject_id
- * @param subject_code
- * @param subject_title
- * @param units
- * @param prerequisites
- * @param active_deactive
- * @param student
- */
-public Subject(Long subject_id, @NotBlank(message = "Subject code must not be empty") String subject_code,
-		@NotBlank(message = "Subject title must not be empty") String subject_title,
-		@NotBlank(message = "Units must not be empty") Integer units, String prerequisites, Boolean active_deactive,
-		Student student) {
-	super();
-	this.subject_id = subject_id;
-	this.subject_code = subject_code;
-	this.subject_title = subject_title;
-	this.units = units;
-	this.prerequisites = prerequisites;
-	this.active_deactive = active_deactive;
-//	this.student = student;
-}
+	public void setStudent_no(Student student) {
+		this.student = student;
+	}
+
+	public Subject() {
+		super();
+	}
+	
+	public Subject(Long subject_id,  String subject_code, String subject_title,Integer units, String prerequisites, Boolean active_deactive,Student student) {
+	
+		this.subject_id = subject_id;
+		this.subject_code = subject_code;
+		this.subject_title = subject_title;
+		this.units = units;
+		this.prerequisites = prerequisites;
+		this.active_deactive = active_deactive;
+	//	this.student = student;
+	}
 
 
 	public Long getSubject_id() {
