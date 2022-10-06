@@ -19,35 +19,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import biz.global.Table.tables.records.StudentRecord;
 import biz.global.model.Student;
 import biz.global.model.Subject;
-import biz.global.service.StudentService;
+import biz.global.repo.StudentRepo;
+import biz.global.repo.SubjectRepo;
 
 @RestController
 @RequestMapping(value = "api/student/")
 @CrossOrigin(origins = "http://localhost:3000")
 public class StudentController {
+	
 	@Autowired
-	private StudentService studentService;
+	StudentRepo studentRepo;
 	
 	@PostMapping(value = "add")
 	public String register(@RequestBody Student student) throws IOException {
-		
-		studentService.addStudent(student);
+//		ObjectMapper mapper = new ObjectMapper();
+//		 System.out.print(mapper.writeValueAsString(student));
+		studentRepo.save(student);
 		
 		return "Student added successfully";
-	}
-	
-	@GetMapping(value = "getallstudents")
-	public List<Student> getAllStudents() {
-		return studentService.getAllStudents();
-	}
-	
-	@GetMapping(value = "getstudents")
-	public Result<Record> getAllStudents1() {
-		return studentService.getStudentsWithSubject();
 	}
 	
 	

@@ -1,5 +1,6 @@
 package biz.global.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class ProfessorLoad {
 	 @Id
@@ -20,6 +23,10 @@ public class ProfessorLoad {
 	 
 	@OneToMany
 	private Set<Program> program_title;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="professorLoad")
+	Set<Subject> subjects = new HashSet<>();
 	 
 	private String section;
 	
@@ -54,6 +61,24 @@ public class ProfessorLoad {
 	}
 	public void setYearLevel(String yearLevel) {
 		this.yearLevel = yearLevel;
+	}
+	public Professor getProfessor() {
+		return professor;
+	}
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
+	}
+	public Set<Program> getProgram_title() {
+		return program_title;
+	}
+	public void setProgram_title(Set<Program> program_title) {
+		this.program_title = program_title;
+	}
+	public Set<Subject> getSubjects() {
+		return subjects;
+	}
+	public void setSubjects(Set<Subject> subjects) {
+		this.subjects = subjects;
 	}
 	
 	 

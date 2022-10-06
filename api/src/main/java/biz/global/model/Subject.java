@@ -1,18 +1,27 @@
 package biz.global.model;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Subject  {
-	private static final long serialVersionUID = 1L;
+	
+	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long subject_id;
@@ -25,39 +34,38 @@ public class Subject  {
 	 
 	private String prerequisites;
 	
-    private Boolean active_deactive = true;
+    private Boolean active_deactive = false;
     
 //	private Grades grades;
     
+    @ManyToMany
+    @JoinTable(name="subject_student", joinColumns = @JoinColumn(name = "subject_id"),inverseJoinColumns = @JoinColumn(name = "student_id"))
+    Set<Student> student= new HashSet<>();
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="load_id", referencedColumnName = "load_id")
+	private ProfessorLoad professorLoad;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Student student;
+    
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="professor_id", referencedColumnName = "professor_id")
+	private Professor professor;
+    
 
-
-	public Student getStudent() {
-		return student;
-	}
-
-
-	public void setStudent_no(Student student) {
-		this.student = student;
-	}
 
 	public Subject() {
 		super();
 	}
 	
-	public Subject(Long subject_id,  String subject_code, String subject_title,Integer units, String prerequisites, Boolean active_deactive,Student student) {
-	
-		this.subject_id = subject_id;
-		this.subject_code = subject_code;
-		this.subject_title = subject_title;
-		this.units = units;
-		this.prerequisites = prerequisites;
-		this.active_deactive = active_deactive;
-	//	this.student = student;
+
+
+	public Set<Student> getStudent() {
+		return student;
 	}
 
+	public void setStudent(Set<Student> student) {
+		this.student = student;
+	}
 
 	public Long getSubject_id() {
 		return subject_id;
@@ -116,6 +124,30 @@ public class Subject  {
 
 	public void setActive_deactive(Boolean active_deactive) {
 		this.active_deactive = active_deactive;
+	}
+
+
+
+	public ProfessorLoad getProfessorLoad() {
+		return professorLoad;
+	}
+
+
+
+	public void setProfessorLoad(ProfessorLoad professorLoad) {
+		this.professorLoad = professorLoad;
+	}
+
+
+
+	public Professor getProfessor() {
+		return professor;
+	}
+
+
+
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
 	}
 
 

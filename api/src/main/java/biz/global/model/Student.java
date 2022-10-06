@@ -3,14 +3,17 @@ import biz.global.util.Generator;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -30,10 +33,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class Student implements  Serializable{
-	private static final long serialVersionUID = 1L;
+//	private static final long serialVersionUID = 1L;
 
 
-	@Id
+	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 
 	 private Long student_id;
@@ -48,35 +51,29 @@ public class Student implements  Serializable{
 //	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
 //	            })
 
-
-	 @JsonRawValue
 	 private String student_no;
 	 
 
-//	 @NotBlank(message="First Name must not be empty")
 
-	 @JsonRawValue
 	 private String firstName;
 	 
 
-//	 @NotBlank(message="Middle Name must not be empty")
 
-	 @JsonRawValue
 	 private String middleName;
 	 
 
-	 @NotBlank(message="Last Name must not be empty")
 
-	 @JsonRawValue
 	 private String lastName;
 	 
 //	 @NotBlank(message="Program must not be empty")
+	 
 	 @OneToMany(mappedBy="student")
 	 @Column(name = "program")
 	 private List<Program> program;
 	 
-	 @OneToMany
-	 private List<Subject> subject;
+	 @JsonIgnore
+	 @ManyToMany(mappedBy="student")
+	 private Set<Subject> subjects = new HashSet<>();
 	 
 //	 @ManyToOne()
 //	 @JsonRawValue
@@ -84,17 +81,15 @@ public class Student implements  Serializable{
 	 
 //	 @NotBlank(message="Birthdate must not be empty")
 
-	 public List<Subject> getSubject() {
-		return subject;
-	}
+	
 
-	public void setSubject(List<Subject> subject) {
-		this.subject = subject;
-	}
+	
+
 
 	public List<Program> getProgram() {
 		return program;
 	}
+	
 
 	public void setProgram(List<Program> program) {
 		this.program = program;
@@ -110,24 +105,48 @@ public class Student implements  Serializable{
 	 private String academicYear;
 //	 @NotBlank(message="Status must not be empty")
 //	private Status status;
+	 @JsonRawValue
+	 private Boolean active_deactive=true;
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 public Student() {
 		 super();
 	 }
-	 @JsonRawValue
-	 private Boolean active_deactive;
+	
+
 	 
-	 public Student(Long student_id, String student_no, String firstName,String middleName, String lastName, String sem, String academicYear, Boolean active_deactive) {
-		 this.student_id = student_id;
-		 this.student_no = student_no;
-		 this.firstName = firstName;
-		 this.middleName = middleName;
-		 this.lastName = lastName;
-		 this.sem = sem;
-		 this.academicYear = academicYear;
-		 this.active_deactive = active_deactive;
-	 }
-	 
+	public Student(Long student_id, String student_no, String firstName, String middleName,
+			String lastName, List<Program> program,
+			Set<Subject> subjects, String sem, String academicYear, Boolean active_deactive) {
+		super();
+		this.student_id = student_id;
+		this.student_no = student_no;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.program = program;
+		this.subjects = subjects;
+		this.sem = sem;
+		this.academicYear = academicYear;
+		this.active_deactive = active_deactive;
+	}
+
+
+	public Set<Subject> getSubjects() {
+		return subjects;
+	}
+
+
+	public void setSubjects(Set<Subject> subjects) {
+		this.subjects = subjects;
+	}
+
+
 	public Long getStudent_id() {
 		return student_id;
 	}
