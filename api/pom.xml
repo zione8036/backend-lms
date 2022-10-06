@@ -121,9 +121,9 @@
                 <configuration>
                     <jdbc>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/lms</url>
+                        <url>jdbc:postgresql://25.6.151.58:5432/lms</url>
                         <user>postgres</user>
-                        <password>secret1234</password>
+                        <password>11332554</password>
                     </jdbc>
                     <generator>
                     	<generate>
@@ -132,7 +132,7 @@
 								true
 							</pojosEqualsAndHashCode>
 							<javaTimeTypes>true</javaTimeTypes>
-							<fluentSetters>true</fluentSetters>
+							<fluentSetters>true</fluentSetters>s
 						</generate>
                         <database>
                             <name>org.jooq.meta.postgres.PostgresDatabase</name>
