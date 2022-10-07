@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -35,14 +36,8 @@ public class Subject  {
 	private String prerequisites;
 	
     private Boolean active_deactive = false;
-    
-//	private Grades grades;
-    
-    @ManyToMany
-    @JoinTable(name="subject_student", joinColumns = @JoinColumn(name = "subject_id"),inverseJoinColumns = @JoinColumn(name = "student_id"))
-    Set<Student> student= new HashSet<>();
 
-    @ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="load_id", referencedColumnName = "load_id")
 	private ProfessorLoad professorLoad;
     
@@ -51,22 +46,22 @@ public class Subject  {
     @JoinColumn(name="professor_id", referencedColumnName = "professor_id")
 	private Professor professor;
     
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subject_grade")
+    private Grades grades;
+    
 
 
+	public Grades getGrades() {
+		return grades;
+	}
+	public void setGrades(Grades grades) {
+		this.grades = grades;
+	}
 	public Subject() {
 		super();
 	}
-	
-
-
-	public Set<Student> getStudent() {
-		return student;
-	}
-
-	public void setStudent(Set<Student> student) {
-		this.student = student;
-	}
-
 	public Long getSubject_id() {
 		return subject_id;
 	}
@@ -149,17 +144,6 @@ public class Subject  {
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
 	}
-
-
-//	public Student getStudent() {
-//		return student;
-//	}
-//
-//
-//	public void setStudent(Student student) {
-//		this.student = student;
-//	}
-	 
 	 
 	
 }

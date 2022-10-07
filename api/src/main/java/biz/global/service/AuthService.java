@@ -41,7 +41,7 @@ public class AuthService {
 		.execute();
 		model.setPassword("");
 		
-		return new AdminResponse(1, jwtUtility.generateToken(model), "Registered Successfully", model);
+		return new AdminResponse(1, jwtUtility.generateToken(model.getUsername()), "Registered Successfully", model);
 	}
 	
 	public  Boolean findByUserName(String username) throws IOException{
@@ -59,7 +59,7 @@ public class AuthService {
 		
 		if(findByUserName(model.getUsername()) && bcrypt.matches(model.getPassword(), adminModel.getPassword())) {
 			model.setPassword("");
-			return new AdminResponse(1, jwtUtility.generateToken(model), "", model);
+			return new AdminResponse(1, jwtUtility.generateToken(model.getUsername()), "", model);
 			//return ResponseEntity.ok().body(new AdminResponse(1, jwtUtility.generateToken(model), "", adminModel));
 		}
 		return new AdminResponse(0, "", "Invalid username or password");

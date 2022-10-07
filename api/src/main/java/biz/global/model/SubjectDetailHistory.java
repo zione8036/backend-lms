@@ -11,36 +11,36 @@ public class SubjectDetailHistory {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long session_id;
-//	 @ManyToOne
-//	private Professor professor;
-//	 @ManyToOne
-//	private Subject subject;
-	 @NotBlank(message="Academic Year must not be empty")
+	 
+	 private Long subject_id;
+
 	private String academicYear;
+	
 	private String sem;
+	
 	private String schedule;
+	
 	private String section;
+	
 	private String yearLevel;
+	
 	private String status;
+	
 	private Boolean active_deactive;
+	
 	public Long getSession_id() {
 		return session_id;
 	}
 	public void setSession_id(Long session_id) {
 		this.session_id = session_id;
 	}
-//	public Professor getProfessor() {
-//		return professor;
-//	}
-//	public void setProfessor(Professor professor) {
-//		this.professor = professor;
-//	}
-//	public Subject getSubject() {
-//		return subject;
-//	}
-//	public void setSubject(Subject subject) {
-//		this.subject = subject;
-//	}
+
+	public Long getSubject_id() {
+		return subject_id;
+	}
+	public void setSubject_id(Long subject_id) {
+		this.subject_id = subject_id;
+	}
 	public String getAcademicYear() {
 		return academicYear;
 	}

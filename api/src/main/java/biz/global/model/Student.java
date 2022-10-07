@@ -3,16 +3,19 @@ import biz.global.util.Generator;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -41,50 +44,114 @@ public class Student implements  Serializable{
 	 
 	 private Long student_id;
 	 
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-//	 @GenericGenerator(
-//	            name = "student_seq",
-//	            strategy = "biz.global.util.Generator",
-//	            parameters = {
-//	                    @Parameter(name = Generator.INCREMENT_PARAM, value = "1"),
-//	                    @Parameter(name = Generator.VALUE_PREFIX_PARAMETER, value = "SN_"),
-//	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
-//	            })
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
+	 @GenericGenerator(
+	            name = "student_seq",
+	            strategy = "biz.global.util.Generator",
+	            parameters = {
+	                    @Parameter(name = Generator.INCREMENT_PARAM, value = "1"),
+	                    @Parameter(name = Generator.VALUE_PREFIX_PARAMETER, value = "SN_"),
+	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
+	            })
 
-	 private String student_no;
-	 
-
+	 private String studentNo;
 
 	 private String firstName;
 	 
-
-
 	 private String middleName;
 	 
-
-
 	 private String lastName;
 	 
-//	 @NotBlank(message="Program must not be empty")
+	 private String password;
 	 
-	 @OneToMany(mappedBy="student")
-	 @Column(name = "program")
+	 private LocalDate birthDate;
+	 
+	 public String status;
+		
+	 public String Course;
+	 
+	 private String sem;
+
+	 private String academicYear;
+	 
+	 private Boolean active_deactive=true;
+	
+	@OneToMany(targetEntity = Program.class, cascade = CascadeType.ALL)
+	 @JoinColumn(referencedColumnName = "student_id", name = "student_program")
 	 private List<Program> program;
 	 
-	 @JsonIgnore
-	 @ManyToMany(mappedBy="student")
-	 private Set<Subject> subjects = new HashSet<>();
+	 @OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
+	 @JoinColumn(name = "student_subject", referencedColumnName = "student_id")
+	 private List<Subject> subjects;
 	 
-//	 @ManyToOne()
-//	 @JsonRawValue
-//	 private Professor professor;
+	 @OneToMany(targetEntity = Grades.class, cascade = CascadeType.ALL)
+	 @JoinColumn(name = "student_grades", referencedColumnName = "student_id" )
+	 private List<Grades> grades;
 	 
-//	 @NotBlank(message="Birthdate must not be empty")
+	 private String type = "student";
 
+	 
+	 public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	public List<Grades> getGrades() {
+		return grades;
+	}
+
+
+	public void setGrades(List<Grades> grades) {
+		this.grades = grades;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+	
 	
 
-	
+	public String getStatus() {
+		return status;
+	}
 
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	public String getCourse() {
+		return Course;
+	}
+
+
+	public void setCourse(String course) {
+		Course = course;
+	}
+
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+	
+	
 
 	public List<Program> getProgram() {
 		return program;
@@ -94,38 +161,18 @@ public class Student implements  Serializable{
 	public void setProgram(List<Program> program) {
 		this.program = program;
 	}
-	@JsonRawValue
-	 private String sem;
-//	 @NotBlank(message="Year level must not be empty")
-//	private Yearlevel yearLevel;
-	 
-	 //@NotBlank(message="Academic Year must not be empty")
-
-	 @JsonRawValue
-	 private String academicYear;
-//	 @NotBlank(message="Status must not be empty")
-//	private Status status;
-	 @JsonRawValue
-	 private Boolean active_deactive=true;
-	 
-	 
-	 
-	 
-	 
-	 
+	
 	 
 	 public Student() {
 		 super();
 	 }
 	
-
-	 
 	public Student(Long student_id, String student_no, String firstName, String middleName,
 			String lastName, List<Program> program,
-			Set<Subject> subjects, String sem, String academicYear, Boolean active_deactive) {
+			List<Subject> subjects, String sem, String academicYear, Boolean active_deactive) {
 		super();
 		this.student_id = student_id;
-		this.student_no = student_no;
+		this.studentNo = student_no;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
@@ -137,12 +184,13 @@ public class Student implements  Serializable{
 	}
 
 
-	public Set<Subject> getSubjects() {
+
+	public List<Subject> getSubjects() {
 		return subjects;
 	}
 
 
-	public void setSubjects(Set<Subject> subjects) {
+	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 
@@ -150,64 +198,67 @@ public class Student implements  Serializable{
 	public Long getStudent_id() {
 		return student_id;
 	}
+	
 	public void setStudent_id(Long student_id) {
 		this.student_id = student_id;
 	}
+	
 	public String getStudent_no() {
-		return student_no;
+		return studentNo;
 	}
+	
 	public void setStudent_no(String student_no) {
-		this.student_no = student_no;
+		this.studentNo = student_no;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
 	public String getMiddleName() {
 		return middleName;
 	}
+	
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
+	
 	public String getLastName() {
 		return lastName;
 	}
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
 	public String getSem() {
 		return sem;
 	}
+	
 	public void setSem(String sem) {
 		this.sem = sem;
 	}
-//	public Yearlevel getYearLevel() {
-//		return yearLevel;
-//	}
-//	public void setYearLevel(Yearlevel yearLevel) {
-//		this.yearLevel = yearLevel;
-//	}
+
+
 	public String getAcademicYear() {
 		return academicYear;
 	}
+	
 	public void setAcademicYear(String academic_year) {
 		this.academicYear = academic_year;
 	}
-//	public Status getStatus() {
-//		return status;
-//	}
-//	public void setStatus(Status status) {
-//		this.status = status;
-//	}
+
 	public Boolean getActive_deactive() {
 		return active_deactive;
 	}
+	
 	public void setActive_deactive(Boolean active_deactive) {
 		this.active_deactive = active_deactive;
 	}
 	
-
 
 }

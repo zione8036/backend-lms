@@ -52,16 +52,16 @@ public class SubjectController {
         return "Subject Successfully Added!";
     }
 	
-    @PutMapping("/{subjectId}/students/{studentId}")
-    Subject addStudentToSubject(
-            @PathVariable Long subjectId,
-            @PathVariable Long studentId
-    ) {
-        Subject subject = subjectRepo.findById(subjectId).get();
-        Student student = studentRepo.findById(studentId).get();
-        subject.getStudent().add(student);
-        return subjectRepo.save(subject);
-    }
+//    @PutMapping("/{subjectId}/students/{studentId}")
+//    Subject addStudentToSubject(
+//            @PathVariable Long subjectId,
+//            @PathVariable Long studentId
+//    ) {
+//        Subject subject = subjectRepo.findById(subjectId).get();
+//        Student student = studentRepo.findById(studentId).get();
+//        subject.getStudent().add(student);
+//        return subjectRepo.save(subject);
+//    }
     
     
     @PutMapping("/{subjectId}/professor/{professorId}")
