@@ -10,10 +10,13 @@ import org.jooq.Result;
 import org.jooq.SelectWhereStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +75,27 @@ public class StudentController {
 		}
 		ResponseModel responseModel = new ResponseModel(0, "Invalid lastname or password",null, null );
 		return ResponseEntity.ok().body(responseModel);
+	}
+	
+	
+	@PatchMapping("update-student-info")
+	public ResponseEntity<ResponseModel> updateStudentInfo(@RequestBody Student student) {
+		Optional<Student> stud = studentRepo.findById(student.getStudent_id());
+		if(stud.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseModel(0, "student does not exist", null, null));
+		}
+		studentRepo.save(student);
+		return ResponseEntity.ok().body(new ResponseModel(1, "updated successfully", null, student));
+	}
+	
+	@DeleteMapping("delete-student")
+	public ResponseEntity<ResponseModel> deleteStudent(@RequestBody String student_no) {
+		Optional<Student> student = Optional.ofNullable(studentRepo.findByStudentNo(student_no));
+		if(student.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseModel(0, "student does not exist", null, null));
+		}
+		studentRepo.deleteById(student.get().getStudent_id());
+		return ResponseEntity.ok().body(new ResponseModel(1, "successfully deleted", null, null));
 	}
 	
 	

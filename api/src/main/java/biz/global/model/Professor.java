@@ -28,7 +28,7 @@ public class Professor {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long professor_id;
 	
-	private String professor_no;
+	private String professorNo;
 
 	private String professor_name;
 	
@@ -71,11 +71,11 @@ public class Professor {
 	}
 
 	public String getProfessor_no() {
-		return professor_no;
+		return professorNo;
 	}
 
 	public void setProfessor_no(String professor_no) {
-		this.professor_no = professor_no;
+		this.professorNo = professor_no;
 	}
 
 	public String getProfessor_name() {

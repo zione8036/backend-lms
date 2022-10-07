@@ -27,7 +27,7 @@ public class Subject  {
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long subject_id;
 	 
-	private String subject_code;
+	private String subjectCode;
 	 
 	private String subject_title;
 	 
@@ -73,12 +73,12 @@ public class Subject  {
 
 
 	public String getSubject_code() {
-		return subject_code;
+		return subjectCode;
 	}
 
 
 	public void setSubject_code(String subject_code) {
-		this.subject_code = subject_code;
+		this.subjectCode = subject_code;
 	}
 
 
