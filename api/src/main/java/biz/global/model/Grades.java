@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import biz.global.util.Generator;
 @Entity
@@ -19,6 +22,7 @@ public class Grades {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long grade_id;
+	 
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
 	 @GenericGenerator(
 	            name = "grade_seq",
@@ -28,15 +32,28 @@ public class Grades {
 	                    @Parameter(name = Generator.VALUE_PREFIX_PARAMETER, value = "SESSION_ID"),
 	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
 	            })
-	private String session_id;
-	 @NotBlank(message="Grade must not be empty")
+	 private String session_id;
+	 
 	 private String grade;
+	 
 	 private String comment;
+	 
 	 private LocalDateTime date_modified = LocalDateTime.now();
+	 
 	 private String remarks;
+	 
 	 private String status;
-//	 @ManyToOne()
-//	 private Professor professor;
+	 
+	 @JsonIgnore
+	 @OneToOne(mappedBy = "grades")
+	 private Subject subject;
+	 
+	public Subject getSubject() {
+		return subject;
+	}
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
 	public Long getGrade_id() {
 		return grade_id;
 	}
@@ -79,12 +96,7 @@ public class Grades {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-//	public Professor getProfessor() {
-//		return professor;
-//	}
-//	public void setProfessor(Professor professor) {
-//		this.professor = professor;
-//	}
+
 	 
 
 }

@@ -1,9 +1,19 @@
 package biz.global.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
+
+import biz.global.model.ResponseModel;
 import biz.global.model.Subject;
 
+@Repository
 public interface SubjectRepo extends JpaRepository<Subject, Long> {
-
+	Subject findBySubjectCode(String subject_code);
+	
+	@Query( nativeQuery = true ,value = "select *from subject where subject_grade is null and professor_id is null and load_id is null and student_subject is null;")
+	List<Subject> getAllSubject();
 }
