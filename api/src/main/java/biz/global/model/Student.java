@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,8 +27,10 @@ import org.hibernate.annotations.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -35,8 +38,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
+
 public class Student implements  Serializable{
-//	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 
 	 @Id
@@ -64,11 +68,9 @@ public class Student implements  Serializable{
 	 
 	 private String password;
 	 
-	 private LocalDate birthDate;
+	 private String birthDate;
 	 
 	 public String status;
-		
-	 public String Course;
 	 
 	 private String sem;
 
@@ -89,9 +91,36 @@ public class Student implements  Serializable{
 	 private List<Grades> grades;
 	 
 	 private String type = "student";
-
 	 
-	 public String getType() {
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name="department_fk")
+	 private Department department;
+	 
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name="course_fk")
+	 private Course course;
+
+	public Course getCourse() {
+		return course;
+	}
+
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+
+	public Department getDepartment() {
+		return department;
+	}
+
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
+	public String getType() {
 		return type;
 	}
 
@@ -121,10 +150,9 @@ public class Student implements  Serializable{
 	}
 
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
-	
 	
 
 	public String getStatus() {
@@ -136,18 +164,7 @@ public class Student implements  Serializable{
 		this.status = status;
 	}
 
-
-	public String getCourse() {
-		return Course;
-	}
-
-
-	public void setCourse(String course) {
-		Course = course;
-	}
-
-
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 	
@@ -203,14 +220,18 @@ public class Student implements  Serializable{
 		this.student_id = student_id;
 	}
 	
-	public String getStudent_no() {
+	
+	
+	public String getStudentNo() {
 		return studentNo;
 	}
-	
-	public void setStudent_no(String student_no) {
-		this.studentNo = student_no;
+
+
+	public void setStudentNo(String studentNo) {
+		this.studentNo = studentNo;
 	}
-	
+
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -260,5 +281,4 @@ public class Student implements  Serializable{
 		this.active_deactive = active_deactive;
 	}
 	
-
 }

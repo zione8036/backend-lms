@@ -1,23 +1,14 @@
 package biz.global.model;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Subject  {
@@ -51,8 +42,23 @@ public class Subject  {
     @JoinColumn(name = "subject_grade")
     private Grades grades;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="course_fk")
+	private Course course;
+    
 
-
+	public String getSubjectCode() {
+		return subjectCode;
+	}
+	public void setSubjectCode(String subjectCode) {
+		this.subjectCode = subjectCode;
+	}
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 	public Grades getGrades() {
 		return grades;
 	}
@@ -69,16 +75,6 @@ public class Subject  {
 
 	public void setSubject_id(Long subject_id) {
 		this.subject_id = subject_id;
-	}
-
-
-	public String getSubject_code() {
-		return subjectCode;
-	}
-
-
-	public void setSubject_code(String subject_code) {
-		this.subjectCode = subject_code;
 	}
 
 

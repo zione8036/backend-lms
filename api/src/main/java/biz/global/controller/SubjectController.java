@@ -44,7 +44,7 @@ public class SubjectController {
     
     @PatchMapping("update")
     public ResponseEntity<ResponseModel> updateSubject(@RequestBody Subject subject) {
-    	Optional<Subject> sub = Optional.ofNullable(subjectRepo.findBySubjectCode(subject.getSubject_code()));
+    	Optional<Subject> sub = Optional.ofNullable(subjectRepo.findBySubjectCode(subject.getSubjectCode()));
     	if(sub.isEmpty()) {
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseModel(0, "subject does not exist", null, null));
     	}
