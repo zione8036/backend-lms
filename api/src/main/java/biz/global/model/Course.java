@@ -1,5 +1,6 @@
 package biz.global.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,13 +44,13 @@ public class Course {
 	private String courseCode;
 	
 
-	@OneToMany(mappedBy="course", cascade = CascadeType.ALL)
-	@JsonBackReference
-	private List<Student> student;
+	@OneToMany(mappedBy="course", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JsonBackReference
+	private List<Student> student = new ArrayList<>();
 	
 	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "course", referencedColumnName = "courseId")
-	private List<Subject> subject;
+	private List<Subject> subject ;
 
 	public List<Student> getStudent() {
 		return student;

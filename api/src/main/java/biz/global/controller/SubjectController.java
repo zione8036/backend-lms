@@ -38,6 +38,11 @@ public class SubjectController {
 
     @PostMapping(value="add")
     public ResponseEntity<ResponseModel> createSubject(@RequestBody Subject subject) {
+    	
+    	Optional<Subject> subj = Optional.ofNullable(subjectRepo.findBySubjectCode(subject.getSubjectCode()));
+    	if(subj.isPresent()) {
+    		return ResponseEntity.ok().body(new ResponseModel(0, "Subject Code already exist", "", null));
+    	}
     	Subject sub = subjectRepo.save(subject);
         return ResponseEntity.ok().body(new ResponseModel(1, "subject successfully added", "", sub));
     }

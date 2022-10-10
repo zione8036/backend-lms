@@ -20,13 +20,13 @@ public class Subject  {
 	 
 	private String subjectCode;
 	 
-	private String subject_title;
+	private String subjectTitle;
 	 
 	private Integer units;
 	 
 	private String prerequisites;
 	
-    private Boolean active_deactive = false;
+    private Boolean activeDeactive = true;
 
 	@ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="load_id", referencedColumnName = "load_id")
@@ -76,18 +76,12 @@ public class Subject  {
 	public void setSubject_id(Long subject_id) {
 		this.subject_id = subject_id;
 	}
-
-
-	public String getSubject_title() {
-		return subject_title;
+	public String getSubjectTitle() {
+		return subjectTitle;
 	}
-
-
-	public void setSubject_title(String subject_title) {
-		this.subject_title = subject_title;
+	public void setSubjectTitle(String subjectTitle) {
+		this.subjectTitle = subjectTitle;
 	}
-
-
 	public Integer getUnits() {
 		return units;
 	}
@@ -108,17 +102,12 @@ public class Subject  {
 	}
 
 
-	public Boolean getActive_deactive() {
-		return active_deactive;
+	public Boolean getActiveDeactive() {
+		return activeDeactive;
 	}
-
-
-	public void setActive_deactive(Boolean active_deactive) {
-		this.active_deactive = active_deactive;
+	public void setActiveDeactive(Boolean activeDeactive) {
+		this.activeDeactive = activeDeactive;
 	}
-
-
-
 	public ProfessorLoad getProfessorLoad() {
 		return professorLoad;
 	}

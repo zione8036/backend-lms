@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -96,8 +97,12 @@ public class Student implements  Serializable{
 	 @JoinColumn(name="department_fk")
 	 private Department department;
 	 
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name="course_fk")
+	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//	 @JoinColumn(name="course_fk")
+	 @JoinTable(name ="student_course", joinColumns = @JoinColumn(
+			 name = "student_fk", referencedColumnName = "student_id", nullable = true
+			 ), inverseJoinColumns = @JoinColumn(name = "course_fk", referencedColumnName = "courseId", nullable = true))
+	 @JsonIgnoreProperties("student")
 	 private Course course;
 
 	public Course getCourse() {
