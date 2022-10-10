@@ -33,10 +33,12 @@ public class ProfessorController {
 
     @PostMapping(value="add")
     public ResponseEntity<ResponseModel> addProfessor(@RequestBody Professor professor) {
-    	Optional<Professor> prof = Optional.ofNullable(professorRepo.findByProfessorNo(professor.getProfessor_no()));
+    	Optional<Professor> prof = Optional.ofNullable(professorRepo.findByProfessorNo(professor.getProfessorNo()));
     	if(prof.isPresent()) {
     		return ResponseEntity.ok().body(new ResponseModel(0, "professor code already exist", null, null));
     	}
+    	professorRepo.save(professor);
+    	professor.setProfessorNo(professor.getProfessor_id());
     	professorRepo.save(professor);
         return ResponseEntity.ok().body(new ResponseModel(0, "professor code already exist", null, prof.get()));
     }

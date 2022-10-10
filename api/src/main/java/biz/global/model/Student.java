@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,19 +42,8 @@ public class Student implements  Serializable{
 
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
-	 
 	 private Long student_id;
-	 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-	 @GenericGenerator(
-	            name = "student_seq",
-	            strategy = "biz.global.util.Generator",
-	            parameters = {
-	                    @Parameter(name = Generator.INCREMENT_PARAM, value = "1"),
-	                    @Parameter(name = Generator.VALUE_PREFIX_PARAMETER, value = "SN_"),
-	                    @Parameter(name = Generator.NUMBER_FORMAT_PARAMETER, value = "%05d")
-	            })
-
+	
 	 private String studentNo;
 
 	 private String firstName;
@@ -74,7 +64,7 @@ public class Student implements  Serializable{
 
 	 private String academicYear;
 	 
-	 private Boolean active_deactive=true;
+	 private Boolean active_deactive = false;
 	
 	@OneToMany(targetEntity = Program.class, cascade = CascadeType.ALL)
 	 @JoinColumn(referencedColumnName = "student_id", name = "student_program")
@@ -89,6 +79,28 @@ public class Student implements  Serializable{
 	 private List<Grades> grades;
 	 
 	 private String type = "student";
+	 
+	 
+	 
+	 public Student() {
+		 super();
+	 }
+	
+	public Student(Long student_id, String firstName, String middleName,
+			String lastName, List<Program> program,
+			List<Subject> subjects, String sem, String academicYear, Boolean active_deactive) {
+		super();
+	
+		this.student_id = student_id;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.program = program;
+		this.subjects = subjects;
+		this.sem = sem;
+		this.academicYear = academicYear;
+		this.active_deactive = active_deactive;
+	}
 
 	 
 	 public String getType() {
@@ -163,29 +175,7 @@ public class Student implements  Serializable{
 	}
 	
 	 
-	 public Student() {
-		 super();
-	 }
-	
-	public Student(Long student_id, String student_no, String firstName, String middleName,
-			String lastName, List<Program> program,
-			List<Subject> subjects, String sem, String academicYear, Boolean active_deactive) {
-		super();
-		this.student_id = student_id;
-		this.studentNo = student_no;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.program = program;
-		this.subjects = subjects;
-		this.sem = sem;
-		this.academicYear = academicYear;
-		this.active_deactive = active_deactive;
-	}
-
-
-
-	public List<Subject> getSubjects() {
+	List<Subject> getSubjects() {
 		return subjects;
 	}
 
@@ -207,8 +197,8 @@ public class Student implements  Serializable{
 		return studentNo;
 	}
 	
-	public void setStudent_no(String student_no) {
-		this.studentNo = student_no;
+	public void setStudent_no(Long student_id) {
+		this.studentNo  = "SN-" + Integer.toString(LocalDate.now().getYear()) + "-" +String.format("%04d",student_id);
 	}
 	
 	public String getFirstName() {

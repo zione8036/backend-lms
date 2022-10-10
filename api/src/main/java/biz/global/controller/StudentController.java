@@ -50,11 +50,14 @@ public class StudentController {
 	public String register(@RequestBody Student student) throws IOException {
 		Optional<Student> stu = Optional.ofNullable(studentRepo.findByStudentNo(student.getStudent_no()));
 		if(!stu.isEmpty()) {
-			return "Student number already exist";
+			return "Student  already exist";
 		}
 		
-		String hashedPassword = bcrypt.encode(student.getStudent_no());
+		String hashedPassword = bcrypt.encode(student.getPassword());
 		student.setPassword(hashedPassword);
+		
+		studentRepo.save(student);
+		student.setStudent_no(student.getStudent_id());
 		studentRepo.save(student);
 		return "Added successfully";
 	}
@@ -68,7 +71,7 @@ public class StudentController {
 	@PostMapping("student-login")
 	public ResponseEntity<ResponseModel> studentLogin(@RequestBody Student student) {
 		Optional<Student> stu = Optional.ofNullable(studentRepo.findByLastName(student.getLastName()));
-		if(stu.isPresent() && stu.get().getLastName().equals(student.getLastName()) && bcrypt.matches(student.getStudent_no(), stu.get().getPassword())) {
+		if(stu.isPresent() && stu.get().getLastName().equals(student.getLastName()) && bcrypt.matches(student.getPassword(), stu.get().getPassword())) {
 			stu.get().setPassword("");
 			ResponseModel responseModel = new ResponseModel(1, "logged in",jwtUtility.generateToken(student.getLastName()), stu.get() );
 			return ResponseEntity.ok().body(responseModel);

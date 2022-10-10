@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import biz.global.model.Professor;
 import biz.global.model.ResponseModel;
 import biz.global.model.Subject;
+import biz.global.repo.ProfessorRepo;
 import biz.global.repo.SubjectRepo;
 
 
@@ -29,6 +31,9 @@ public class SubjectController {
 	
 	@Autowired
 	private SubjectRepo subjectRepo;
+	
+	@Autowired
+	private  ProfessorRepo professorRepo;
 
 	
 	@GetMapping(value= "all")
@@ -38,6 +43,8 @@ public class SubjectController {
 
     @PostMapping(value="add")
     public ResponseEntity<ResponseModel> createSubject(@RequestBody Subject subject) {
+    	subjectRepo.save(subject);
+    	subject.setSubject_code(subject.getSubject_id());
     	Subject sub = subjectRepo.save(subject);
         return ResponseEntity.ok().body(new ResponseModel(1, "subject successfully added", "", sub));
     }
@@ -51,6 +58,17 @@ public class SubjectController {
     	subject.setSubject_id(sub.get().getSubject_id());
     	subjectRepo.save(subject);
     	return ResponseEntity.ok().body(new ResponseModel(1, "updated successfully", null, subject));
+    }
+    
+    @PutMapping("/{subjectId}/prof/{professorId}")
+    Subject assignProfessorToSubject(
+            @PathVariable Long subjectId,
+            @PathVariable Long professorId
+    ) {
+        Subject subject = subjectRepo.findById(subjectId).get();
+        Professor prof = professorRepo.findById(professorId).get();
+        subject.setProfessor(prof);
+        return subjectRepo.save(subject);
     }
     
     @DeleteMapping("delete")
