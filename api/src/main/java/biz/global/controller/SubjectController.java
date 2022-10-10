@@ -60,12 +60,12 @@ public class SubjectController {
     	return ResponseEntity.ok().body(new ResponseModel(1, "updated successfully", null, subject));
     }
     
-    @PutMapping("/{subjectId}/prof/{professorId}")
+    @PutMapping("/{subjectID}/prof/{professorId}")
     Subject assignProfessorToSubject(
-            @PathVariable Long subjectId,
+            @PathVariable Long subjectID,
             @PathVariable Long professorId
     ) {
-        Subject subject = subjectRepo.findById(subjectId).get();
+        Subject subject = subjectRepo.findById(subjectID).get();
         Professor prof = professorRepo.findById(professorId).get();
         subject.setProfessor(prof);
         return subjectRepo.save(subject);
