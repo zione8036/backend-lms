@@ -22,18 +22,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -93,9 +86,7 @@ public class Student implements  Serializable{
 		this.subject = subject;
 	}
 
-//	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "student_subject", referencedColumnName = "student_id")
-	@ManyToMany(targetEntity = Subject.class)
+	@ManyToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
 	@JoinTable(name ="student_subject",
 	joinColumns = @JoinColumn(name = "student_id"),
 	inverseJoinColumns =  @JoinColumn(name = "subject_id")
@@ -108,11 +99,11 @@ public class Student implements  Serializable{
 	 
 	 private String type = "student";
 	 
-	 @ManyToOne(fetch = FetchType.LAZY)
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	 @JoinColumn(name="department_fk")
 	 private Department department;
 	 
-	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	 @JoinColumn(name="course_fk")
 	 private Course course;
 

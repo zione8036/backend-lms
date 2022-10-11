@@ -1,15 +1,10 @@
 package biz.global.controller;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
-import org.jooq.Record;
-import org.jooq.Result;
-import org.jooq.SelectWhereStep;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,15 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import biz.global.Table.tables.records.StudentRecord;
 import biz.global.model.ResponseModel;
 import biz.global.model.Student;
-import biz.global.model.Subject;
 import biz.global.repo.StudentRepo;
-import biz.global.repo.SubjectRepo;
 import biz.global.util.JWTUtility;
 
 @RestController
@@ -47,18 +38,18 @@ public class StudentController {
 	BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 	
 	@PostMapping(value = "add")
-	public String register(@RequestBody Student student) throws IOException {
+	public ResponseEntity<ResponseModel> register(@RequestBody Student student) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.print(mapper.writeValueAsString(student));
 		Optional<Student> stu = Optional.ofNullable(studentRepo.findByStudentNo(student.getStudentNo()));
 		if(!stu.isEmpty()) {
-			return "Student number already exist";
+			return ResponseEntity.ok().body(new ResponseModel(0, "student number already exist", null, null));
 		}
 		
 		String hashedPassword = bcrypt.encode(student.getStudentNo());
 		student.setPassword(hashedPassword);
 		studentRepo.save(student);
-		return "Added successfully";
+		return ResponseEntity.ok().body(new ResponseModel(1, "student successfully added", null, student));
 	}
 	
 	@GetMapping("studentlist")
