@@ -44,8 +44,9 @@ public class Course {
 	private String courseCode;
 	
 
-	@OneToMany(mappedBy="course", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany( cascade = CascadeType.ALL)
 //	@JsonBackReference
+	@JoinColumn(name = "course", referencedColumnName = "courseId")
 	private List<Student> student = new ArrayList<>();
 	
 	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)

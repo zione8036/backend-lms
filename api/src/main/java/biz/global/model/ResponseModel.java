@@ -1,10 +1,13 @@
 package biz.global.model;
 
+import java.util.List;
+
 public class ResponseModel {
 	private int status;
 	private String message;
 	private String token;
 	private Object object;
+	private List<Subject> subjects;
 	
 	public ResponseModel() {
 		
@@ -16,6 +19,23 @@ public class ResponseModel {
 		this.token = token;
 		this.object = object;
 	}
+	
+	public ResponseModel(int status, String message, String token, Object object, List<Subject> subjects) {
+		this.status = status;
+		this.message = message;
+		this.token = token;
+		this.object = object;
+		this.subjects = subjects;
+	}
+	
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
+	}
+
 	public int getStatus() {
 		return status;
 	}

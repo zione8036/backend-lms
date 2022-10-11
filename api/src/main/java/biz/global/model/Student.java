@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -83,9 +84,23 @@ public class Student implements  Serializable{
 	 @JoinColumn(referencedColumnName = "student_id", name = "student_program")
 	 private List<Program> program;
 	 
-	 @OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
-	 @JoinColumn(name = "student_subject", referencedColumnName = "student_id")
-	 private List<Subject> subjects;
+	 public List<Subject> getSubject() {
+		return subject;
+	}
+
+
+	public void setSubject(List<Subject> subject) {
+		this.subject = subject;
+	}
+
+//	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "student_subject", referencedColumnName = "student_id")
+	@ManyToMany(targetEntity = Subject.class)
+	@JoinTable(name ="student_subject",
+	joinColumns = @JoinColumn(name = "student_id"),
+	inverseJoinColumns =  @JoinColumn(name = "subject_id")
+			)
+	 private List<Subject> subject = new ArrayList<>();
 	 
 	 @OneToMany(targetEntity = Grades.class, cascade = CascadeType.ALL)
 	 @JoinColumn(name = "student_grades", referencedColumnName = "student_id" )
@@ -97,12 +112,8 @@ public class Student implements  Serializable{
 	 @JoinColumn(name="department_fk")
 	 private Department department;
 	 
-	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//	 @JoinColumn(name="course_fk")
-	 @JoinTable(name ="student_course", joinColumns = @JoinColumn(
-			 name = "student_fk", referencedColumnName = "student_id", nullable = true
-			 ), inverseJoinColumns = @JoinColumn(name = "course_fk", referencedColumnName = "courseId", nullable = true))
-	 @JsonIgnoreProperties("student")
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	 @JoinColumn(name="course_fk")
 	 private Course course;
 
 	public Course getCourse() {
@@ -199,22 +210,13 @@ public class Student implements  Serializable{
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.program = program;
-		this.subjects = subjects;
+		this.subject = subjects;
 		this.sem = sem;
 		this.academicYear = academicYear;
 		this.active_deactive = active_deactive;
 	}
 
 
-
-	public List<Subject> getSubjects() {
-		return subjects;
-	}
-
-
-	public void setSubjects(List<Subject> subjects) {
-		this.subjects = subjects;
-	}
 
 
 	public Long getStudent_id() {

@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import biz.global.model.Professor;
 import biz.global.model.ResponseModel;
 import biz.global.model.Subject;
+import biz.global.repo.ProfessorRepo;
 import biz.global.repo.SubjectRepo;
 
 
@@ -29,7 +31,9 @@ public class SubjectController {
 	
 	@Autowired
 	private SubjectRepo subjectRepo;
-
+	
+	@Autowired
+	private ProfessorRepo professorRepo;
 	
 	@GetMapping(value= "all")
     List<Subject> getSubjects() {
@@ -69,5 +73,14 @@ public class SubjectController {
     	return ResponseEntity.ok().body(new ResponseModel(1, "subject deleted successfully", null, null));
     }
 
-	
+    @PutMapping("/{subjectId}/professor/{professorId}")
+    Subject addProfessorToSubject(
+            @PathVariable Long subjectId,
+            @PathVariable Long professorId
+    ) {
+        Subject subject = subjectRepo.findById(subjectId).get();
+        Professor professor = professorRepo.findById(professorId).get();
+        subject.setProfessor(professor);
+        return subjectRepo.save(subject);
+    }
 }
