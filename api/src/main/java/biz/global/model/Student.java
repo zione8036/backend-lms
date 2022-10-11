@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,18 +22,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -83,9 +77,21 @@ public class Student implements  Serializable{
 	 @JoinColumn(referencedColumnName = "student_id", name = "student_program")
 	 private List<Program> program;
 	 
-	 @OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
-	 @JoinColumn(name = "student_subject", referencedColumnName = "student_id")
-	 private List<Subject> subjects;
+	 public List<Subject> getSubject() {
+		return subject;
+	}
+
+
+	public void setSubject(List<Subject> subject) {
+		this.subject = subject;
+	}
+
+	@ManyToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
+	@JoinTable(name ="student_subject",
+	joinColumns = @JoinColumn(name = "student_id"),
+	inverseJoinColumns =  @JoinColumn(name = "subject_id")
+			)
+	 private List<Subject> subject = new ArrayList<>();
 	 
 	 @OneToMany(targetEntity = Grades.class, cascade = CascadeType.ALL)
 	 @JoinColumn(name = "student_grades", referencedColumnName = "student_id" )
@@ -93,16 +99,12 @@ public class Student implements  Serializable{
 	 
 	 private String type = "student";
 	 
-	 @ManyToOne(fetch = FetchType.LAZY)
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	 @JoinColumn(name="department_fk")
 	 private Department department;
 	 
-	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//	 @JoinColumn(name="course_fk")
-	 @JoinTable(name ="student_course", joinColumns = @JoinColumn(
-			 name = "student_fk", referencedColumnName = "student_id", nullable = true
-			 ), inverseJoinColumns = @JoinColumn(name = "course_fk", referencedColumnName = "courseId", nullable = true))
-	 @JsonIgnoreProperties("student")
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 @JoinColumn(name="course_fk")
 	 private Course course;
 
 	public Course getCourse() {
@@ -199,22 +201,13 @@ public class Student implements  Serializable{
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.program = program;
-		this.subjects = subjects;
+		this.subject = subjects;
 		this.sem = sem;
 		this.academicYear = academicYear;
 		this.active_deactive = active_deactive;
 	}
 
 
-
-	public List<Subject> getSubjects() {
-		return subjects;
-	}
-
-
-	public void setSubjects(List<Subject> subjects) {
-		this.subjects = subjects;
-	}
 
 
 	public Long getStudent_id() {

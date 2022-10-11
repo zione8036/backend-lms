@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import biz.global.exception.ResourceNotFoundException;
+import biz.global.model.Attendance;
 import biz.global.model.Professor;
 import biz.global.model.ResponseModel;
 import biz.global.model.Student;
 import biz.global.model.Subject;
+import biz.global.repo.AttendanceRepo;
 import biz.global.repo.ProfessorRepo;
 
 @RestController
@@ -32,6 +36,11 @@ import biz.global.repo.ProfessorRepo;
 public class ProfessorController {
 	@Autowired
 	private ProfessorRepo professorRepo;
+	
+
+	@Autowired 
+	private AttendanceRepo attendance;
+	
 	
 	@GetMapping(value= "all")
     List<Professor> getprofessors() {
@@ -69,7 +78,6 @@ public class ProfessorController {
 		}
 		return ResponseEntity.ok().body(new ResponseModel(0, "An unexpected error occurred", "", null));
 	}
-
     
     @DeleteMapping("{id}")
     public ResponseEntity<ResponseModel> deleteProfessor(@PathVariable Long id){
@@ -81,6 +89,11 @@ public class ProfessorController {
 		professorRepo.deleteById(professor.get().getProfessor_id());
 		
 		return ResponseEntity.ok().body(new ResponseModel(1, "successfully deleted", null, null));
+    }
+    
+    @GetMapping(value="attendance")
+    public List<Attendance> getAllStudentsEnrolledSubject(@RequestParam String subjectCode){
+    	return attendance.getAllStudentsEnrolledSubject(subjectCode);
     }
     
 }
