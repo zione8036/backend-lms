@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import biz.global.model.Department;
 import biz.global.model.ResponseModel;
+import biz.global.model.Subject;
 import biz.global.repo.DepartmentRepo;
+import biz.global.repo.SubjectRepo;
 
 @RestController
 @RequestMapping("api/departments")
@@ -25,6 +27,9 @@ public class DepartmentController {
 	
 	@Autowired
 	private DepartmentRepo departmentRepo;
+	
+	@Autowired
+	private SubjectRepo subjectRepo;
 	
 	@PostMapping(value = "/add")
 	private ResponseEntity<ResponseModel>  addDepartment(@RequestBody Department dep) {
@@ -44,7 +49,14 @@ public class DepartmentController {
 	@GetMapping(value = "/all")
 	private ResponseEntity<ResponseModel> all() {
 		List<Department> dep = departmentRepo.findAll();
-		return ResponseEntity.ok().body(new ResponseModel(1, "get all departments", "", dep));
+		return ResponseEntity.ok().body(new ResponseModel(1, "get all departments", "", dep, null));
+	}
+	
+	@GetMapping(value = "/alldepwithsub")
+	private ResponseEntity<ResponseModel> allDepartmentWithSubject() {
+		List<Department> dep = departmentRepo.findAll();
+		List<Subject> subjects = subjectRepo.findAll();
+		return ResponseEntity.ok().body(new ResponseModel(1, "get all departments", "", dep, subjects));
 	}
 
 }

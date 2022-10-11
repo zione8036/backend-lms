@@ -1,5 +1,10 @@
 package biz.global.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,8 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Subject  {
@@ -46,7 +55,18 @@ public class Subject  {
 	@JoinColumn(name="course_fk")
 	private Course course;
     
+//    @ManyToOne(cascade =  CascadeType.MERGE, fetch = FetchType.LAZY)
+//    @JoinColumn(name="student_fk", referencedColumnName = "student_id")
+    @ManyToMany()
+    private List<Student> student = new ArrayList<>();
 
+
+	public List<Student> getStudent() {
+		return student;
+	}
+	public void setStudent(List<Student> student) {
+		this.student = student;
+	}
 	public String getSubjectCode() {
 		return subjectCode;
 	}
