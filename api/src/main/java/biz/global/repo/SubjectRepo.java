@@ -16,5 +16,5 @@ public interface SubjectRepo extends JpaRepository<Subject, Long> {
 	@Query( nativeQuery = true ,value = "select *from subject where subject_grade is null and professor_id is null and load_id is null and student_subject is null;")
 	List<Subject> getAllSubject();
 	
-	Subject  findBySubjectCode(String subjectCode);
+	Subject findBySubjectCode(String subjectCode);
 }
