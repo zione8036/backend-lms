@@ -1,15 +1,19 @@
 package biz.global.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.OnDelete;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,11 +28,12 @@ public class Department {
 	
 	@OneToMany(targetEntity = Course.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "department", referencedColumnName = "departmentId")
-	private List<Course> course;
+	@ElementCollection
+	private List<Course> course = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="department")
-	private List<Student> student;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="department", orphanRemoval = true)
+	private List<Student> student = new ArrayList<>();
 
 	public List<Student> getStudent() {
 		return student;
