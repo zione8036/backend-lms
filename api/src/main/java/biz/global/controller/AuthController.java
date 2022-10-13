@@ -27,7 +27,7 @@ public class AuthController {
 		return authService.saveAdminData(model);
 	}
 	
-	@PostMapping(value = "login/{type}") 
+	@PostMapping(value = "login") 
 	public AdminResponse login(@RequestBody Admin model) throws IOException{
 		return authService.login(model);
 	}

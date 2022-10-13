@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import biz.global.dto.StudentDto;
+import biz.global.model.Admin;
 import biz.global.model.ResponseModel;
 import biz.global.model.Student;
 import biz.global.repo.StudentRepo;
@@ -39,15 +39,11 @@ public class StudentController {
 	@Autowired
 	private JWTUtility jwtUtility;
 	
-	@Autowired
-	private ModelMapper modelMapper;
 	
 	BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 	
 	@PostMapping(value = "add")
 	public ResponseEntity<ResponseModel> register(@RequestBody Student student) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.print(mapper.writeValueAsString(student));
 		Optional<Student> stu = Optional.ofNullable(studentRepo.findByStudentNo(student.getStudentNo()));
 		if(!stu.isEmpty()) {
 			return ResponseEntity.ok().body(new ResponseModel(0, "student number already exist", null, null));
@@ -65,12 +61,15 @@ public class StudentController {
 	}
 	
 	@PostMapping("student-login")
-	public ResponseEntity<ResponseModel> studentLogin(@RequestBody Student student) {
-		Optional<Student> stu = Optional.ofNullable(studentRepo.findByLastName(student.getLastName()));
-		if(stu.isPresent() && stu.get().getLastName().equals(student.getLastName()) && bcrypt.matches(student.getStudentNo(), stu.get().getPassword())) {
+	public ResponseEntity<ResponseModel> studentLogin(@RequestBody Admin student) throws JsonProcessingException {
+		Optional<Student> stu = Optional.ofNullable(studentRepo.findByLastName(student.getUsername()));
+		if(stu.isPresent() && stu.get().getLastName().equals(student.getUsername()) && bcrypt.matches(student.getPassword(), stu.get().getPassword()) && stu.get().getActive_deactive()) {
 			stu.get().setPassword("");
 			ResponseModel responseModel = new ResponseModel(1, "logged in",jwtUtility.generateToken(student.getLastName()), stu.get() );
 			return ResponseEntity.ok().body(responseModel);
+		}
+		else if(!stu.get().getActive_deactive()) {
+			return ResponseEntity.ok().body(new ResponseModel(0, "your account has been deactivated", "", null));
 		}
 		ResponseModel responseModel = new ResponseModel(0, "Invalid lastname or password",null, null );
 		return ResponseEntity.ok().body(responseModel);
