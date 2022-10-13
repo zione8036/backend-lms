@@ -44,14 +44,13 @@ public class Course {
 	private String courseCode;
 	
 
-	@OneToMany( cascade = CascadeType.ALL)
-//	@JsonBackReference
+	@OneToMany(cascade = CascadeType.MERGE,  fetch = FetchType.LAZY)
 	@JoinColumn(name = "course", referencedColumnName = "courseId")
 	private List<Student> student = new ArrayList<>();
 	
 	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "course", referencedColumnName = "courseId")
-	private List<Subject> subject ;
+	private List<Subject> subject = new ArrayList<>();
 
 	public List<Student> getStudent() {
 		return student;

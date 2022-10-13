@@ -55,9 +55,8 @@ public class Subject  {
 	@JoinColumn(name="course_fk")
 	private Course course;
     
-//    @ManyToOne(cascade =  CascadeType.MERGE, fetch = FetchType.LAZY)
-//    @JoinColumn(name="student_fk", referencedColumnName = "student_id")
-    @ManyToMany()
+
+    @ManyToMany(cascade =  CascadeType.ALL)
     private List<Student> student = new ArrayList<>();
 
 
