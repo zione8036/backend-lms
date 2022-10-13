@@ -2,7 +2,12 @@ package biz.global.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +44,12 @@ public class ProfessorController {
 	
 
 	@Autowired 
-	private AttendanceRepo attendance;
+	private AttendanceRepo attendanceRepo;
+	
+	
+
+	
+	
 	
 	
 	@GetMapping(value= "all")
@@ -58,6 +68,7 @@ public class ProfessorController {
 		System.out.print(mapper.writeValueAsString(professor));
 		
     	professorRepo.save(professor);
+
         return ResponseEntity.ok().body(new ResponseModel(0, "professor added successfully", null, professor));
     }
     
@@ -89,11 +100,21 @@ public class ProfessorController {
 		professorRepo.deleteById(professor.get().getProfessor_id());
 		
 		return ResponseEntity.ok().body(new ResponseModel(1, "successfully deleted", null, null));
+
     }
     
     @GetMapping(value="attendance")
-    public List<Attendance> getAllStudentsEnrolledSubject(@RequestParam String subjectCode){
-    	return attendance.getAllStudentsEnrolledSubject(subjectCode);
+    public List<Object> getAllStudentsEnrolledSubject(@RequestParam String subjectCode){
+    	List<Object> obj = attendanceRepo.getAllStudentsEnrolledSubject(subjectCode);
+    	return obj;
+    }
+    
+    
+    @PostMapping(value="attendancesheet")
+    public String attendanceChecking( @RequestBody Attendance model) {
+    	
+    	attendanceRepo.save(model);
+    	return "attendance ok";
     }
     
 }
