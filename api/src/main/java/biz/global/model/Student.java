@@ -41,7 +41,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 
-public class Student implements  Serializable{
+public class Student  implements  Serializable{
 	private static final long serialVersionUID = 1L;
 
 
@@ -51,7 +51,7 @@ public class Student implements  Serializable{
 	 private Long student_id;
 	 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-	 @GenericGenerator(
+	@GenericGenerator(
 	            name = "student_seq",
 	            strategy = "biz.global.util.Generator",
 	            parameters = {
@@ -93,8 +93,7 @@ public class Student implements  Serializable{
 		this.subject = subject;
 	}
 
-//	@OneToMany(targetEntity = Subject.class, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "student_subject", referencedColumnName = "student_id")
+
 	@ManyToMany(targetEntity = Subject.class)
 	@JoinTable(name ="student_subject",
 	joinColumns = @JoinColumn(name = "student_id"),
@@ -115,6 +114,9 @@ public class Student implements  Serializable{
 	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	 @JoinColumn(name="course_fk")
 	 private Course course;
+	 
+	 @ManyToMany()
+	    private List<AttendanceSheet> attendance = new ArrayList<>();
 
 	public Course getCourse() {
 		return course;

@@ -37,33 +37,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
-@Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
-@Data
-
-public class Attendance implements  Serializable{
+public class AttendanceSheet implements  Serializable{
 	private static final long serialVersionUID = 1L;
 
-
-	 @Id
-	 @GeneratedValue(strategy=GenerationType.IDENTITY)
-	 
-	 private Long attendance_id;
-	
-	 private LocalDate date = LocalDate.now();
 	 
 	 private Boolean isPresent;
-	 
-	
 
-	 
-	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	 @JoinColumn(name="subject_fk")
-	 private Subject subject;
-	 
-	 
-	 @ManyToMany(targetEntity = AttendanceSheet.class)
-		private List<AttendanceSheet> studentrecord = new ArrayList<>();
+	private Student studentrecord;
+	
+	
 
 	public Boolean getIsPresent() {
 		return isPresent;
@@ -73,39 +55,22 @@ public class Attendance implements  Serializable{
 		this.isPresent = isPresent;
 	}
 
-	public List<AttendanceSheet> getStudentrecord() {
+	public Student getStudentrecord() {
 		return studentrecord;
 	}
 
-	public void setStudentrecord(List<AttendanceSheet> studentrecord) {
+	public void setStudentrecord(Student studentrecord) {
 		this.studentrecord = studentrecord;
 	}
 
-	public Long getAttendance_id() {
-		return attendance_id;
-	}
-
-	public void setAttendance_id(Long attendance_id) {
-		this.attendance_id = attendance_id;
-	}
+	 
 
 
 
-	public LocalDate getDate() {
-		return date;
-	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
 
-	public Subject getSubject() {
-		return subject;
-	}
+	
 
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
 
 
 	

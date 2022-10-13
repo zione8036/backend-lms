@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -54,11 +55,13 @@ public class Subject  {
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="course_fk")
 	private Course course;
-    
-//    @ManyToOne(cascade =  CascadeType.MERGE, fetch = FetchType.LAZY)
-//    @JoinColumn(name="student_fk", referencedColumnName = "student_id")
+
     @ManyToMany()
     private List<Student> student = new ArrayList<>();
+    
+    @OneToMany()
+    private List<Attendance> attendance = new ArrayList<>();
+    
 
 
 	public List<Student> getStudent() {
