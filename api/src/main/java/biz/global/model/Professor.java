@@ -30,7 +30,7 @@ public class Professor {
 	
 	private String professorNo;
 
-	private String professor_name;
+	private String professorName;
 	
 	private String work;
 	
@@ -42,7 +42,7 @@ public class Professor {
 	
 	private String password;
 	
-	private Boolean active_deactive;
+	private Boolean activeDeactive;
 	
 	@OneToMany(targetEntity = Grades.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "encode", referencedColumnName = "professor_id" )
@@ -70,20 +70,20 @@ public class Professor {
 		this.professor_id = professor_id;
 	}
 
-	public String getProfessor_no() {
+	public String getProfessorNo() {
 		return professorNo;
 	}
 
-	public void setProfessor_no(String professor_no) {
-		this.professorNo = professor_no;
+	public void setProfessorNo(String professorNo) {
+		this.professorNo = professorNo;
 	}
 
-	public String getProfessor_name() {
-		return professor_name;
+	public String getProfessorName() {
+		return professorName;
 	}
 
-	public void setProfessor_name(String professor_name) {
-		this.professor_name = professor_name;
+	public void setProfessorName(String professorName) {
+		this.professorName = professorName;
 	}
 
 	public String getWork() {
@@ -126,12 +126,28 @@ public class Professor {
 		this.password = password;
 	}
 
-	public Boolean getActive_deactive() {
-		return active_deactive;
+	public Boolean getActiveDeactive() {
+		return activeDeactive;
 	}
 
-	public void setActive_deactive(Boolean active_deactive) {
-		this.active_deactive = active_deactive;
+	public void setActiveDeactive(Boolean activeDeactive) {
+		this.activeDeactive = activeDeactive;
+	}
+
+	public List<ProfessorLoad> getProfessorLoad() {
+		return professorLoad;
+	}
+
+	public void setProfessorLoad(List<ProfessorLoad> professorLoad) {
+		this.professorLoad = professorLoad;
+	}
+
+	public List<SubjectDetailHistory> getSubjectDetailHistory() {
+		return subjectDetailHistory;
+	}
+
+	public void setSubjectDetailHistory(List<SubjectDetailHistory> subjectDetailHistory) {
+		this.subjectDetailHistory = subjectDetailHistory;
 	}
 
 	public List<Grades> getGrades() {

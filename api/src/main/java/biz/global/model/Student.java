@@ -22,18 +22,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.Parameter;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -94,10 +88,12 @@ public class Student  implements  Serializable{
 	}
 
 
-	@ManyToMany(targetEntity = Subject.class)
+=======
+	@ManyToMany(targetEntity = Subject.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+
 	@JoinTable(name ="student_subject",
-	joinColumns = @JoinColumn(name = "student_id"),
-	inverseJoinColumns =  @JoinColumn(name = "subject_id")
+	joinColumns = @JoinColumn(name = "student_id", updatable = true, insertable = true),
+	inverseJoinColumns =  @JoinColumn(name = "subject_id", updatable = true, insertable = true)
 			)
 	 private List<Subject> subject = new ArrayList<>();
 	 
@@ -107,12 +103,12 @@ public class Student  implements  Serializable{
 	 
 	 private String type = "student";
 	 
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name="department_fk")
+	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	 @JoinColumn(name="department_fk", updatable = true, insertable = true)
 	 private Department department;
 	 
-	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	 @JoinColumn(name="course_fk")
+	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	 @JoinColumn(name="course_fk", updatable = true, insertable = true)
 	 private Course course;
 	 
 	 @ManyToMany()

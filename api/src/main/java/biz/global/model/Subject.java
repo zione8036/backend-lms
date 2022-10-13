@@ -56,7 +56,10 @@ public class Subject  {
 	@JoinColumn(name="course_fk")
 	private Course course;
 
-    @ManyToMany()
+    
+
+    @ManyToMany(cascade =  CascadeType.ALL)
+
     private List<Student> student = new ArrayList<>();
     
     @OneToMany()
