@@ -59,7 +59,7 @@ public class AuthService {
 		
 		if(findByUserName(model.getUsername()) && bcrypt.matches(model.getPassword(), adminModel.getPassword())) {
 			model.setPassword("");
-			return new AdminResponse(1, jwtUtility.generateToken(model.getUsername()), "", model);
+			return new AdminResponse(1, jwtUtility.generateToken(model.getUsername()), "", adminModel);
 			//return ResponseEntity.ok().body(new AdminResponse(1, jwtUtility.generateToken(model), "", adminModel));
 		}
 		return new AdminResponse(0, "", "Invalid username or password");
